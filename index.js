@@ -6,6 +6,7 @@ const keys = require("./config/keys.js");
 require("./models/User");
 require("./services/passport");
 
+// Database Connection
 const connectDB = async () => {
   try {
     await mongoose.connect(keys.mongoURI, {
@@ -26,6 +27,7 @@ connectDB();
 
 const app = express();
 
+// Cookies
 app.use(
   cookieSession({
     maxAge: 60 * 60 * 1000,
@@ -33,11 +35,15 @@ app.use(
   })
 );
 
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Routes
 require("./routes/authRoutes")(app);
+require("./routes/recipeRoutes")(app);
 
+// Server
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
